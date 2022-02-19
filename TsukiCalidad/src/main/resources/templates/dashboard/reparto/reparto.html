@@ -40,7 +40,7 @@
 										<td th:text=${item.fecha}></td>
 										<td th:text=${item.precio}></td>
 										<td class="text-center">
-											  <a class="btn editar editarReparto" th:id="${item.id}" th:param1="${item.precio}" th:param2="${item.fecha}"><i class="fas fa-edit"></i></a>
+											  <a class="btn editar editarReparto" th:id="${item.id}" th:param1="${item.precio}" th:param2="${item.fecha}" th:param3="${item.pedido.cliente.nombre}" th:param4="${item.pedido.id}"><i class="fas fa-edit"></i></a>
 											  <a th:onclick="eliminar([[${item.id}]])" class="btn eliminar eliminar "><i class="far fa-trash-alt"></i></a>
 										</td>
 									</tr>
@@ -124,7 +124,26 @@
 				    <form th:action="@{/reparto/form}" th:object="${reparto}" 
 				    method="post" class="needs-validation" novalidate>
 				      <input type="hidden" th:field="*{id}" />
+				      <input type="hidden" th:field="*{pedido.id}" name="pedido" id="txtPedido" />
 				      <div class="modal-body" id="modalMensaje">
+				      	<fieldset disabled>
+				      		<div class="form-row">
+				          		<div class="col-12 mb-3">
+				            	<label>Nombre del Cliente</label>
+		               			<input th:field="*{pedido.cliente.nombre}" type="text"
+								class="form-control" placeholder="Ingrese nombre del cliente"
+									name="nombre" id="txtNombre" required="required"/>
+				          		</div>
+				        	</div>
+				        </fieldset>
+				      		<div class="form-row">
+						          <div class="col-12 mb-3">
+							            <label>Fecha del reparto:</label>
+							            <input th:field="*{fecha}" type="date"
+										class="form-control" placeholder="Ingrese fecha de entrega"
+										name="fecha" id="txtFecha" required="required" />
+						          </div>
+				        	</div>
 				        	<div class="form-row">
 				          		<div class="col-12 mb-3">
 				            	<label>Precio del reparto</label>
@@ -133,15 +152,6 @@
 									name="precio" id="txtPrecio" required="required" />
 				          		</div>
 				        	</div>
-				        	<div class="form-row">
-						          <div class="col-12 mb-3">
-							            <label>Fecha del reparto:</label>
-							            <input th:field="*{fecha}" type="date"
-										class="form-control" placeholder="Ingrese fecha de entrega"
-										name="fecha" id="txtFecha" required="required" />
-						          </div>
-				        	</div>
-				        
 				      </div>
 				      <div class="modal-footer">
 					        <button type="button" class="btn btn-secondary" data-dismiss="modal">

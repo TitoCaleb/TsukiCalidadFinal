@@ -15,103 +15,215 @@
 
 		<!-- AquÃ­ inicia contenido -->
 		<div class="content-wrapper">
-			<div class="container mt-4">
+	<div class="container mt-4">
         <br>
         <div class="card">
-            <div class="card-header bg-danger text-white"> <i class="fas fa-users"></i> Comprobantes de pago</div>
+        	<div class="card-header bg-danger text-white"><i class="fas fa-users"></i> Generar Factura</div>
+        	<div class="card-body">		
+               	<div class="table-responsive">
+							<table class="table table-bordered table-hover">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">Nombre Cliente</th>
+										<th scope="col">Nombre pedido</th>
+										<th scope="col">Generar Boleta</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="item: ${listaPedidos}">
+									<td th:text="${item.cliente.nombre}"></td>
+									<td th:text="${item.nombre}"></td>
+									<td class="text-center">
+									<a th:each="item2: ${listaReparto}"th:if="${item2.pedido.id==item.id}" class="btn editar generarFactura" title="generarFactura" 
+										th:id="${item.id}" th:param1="${item.cliente.nombre}" th:param2="${item.nombre}" th:param3="${item.detalle}"
+										th:param4="${item.precio}" th:param5="${item2.precio}" th:param6="${item2.precio} + ${item.precio}" th:param7="${item2.id}"
+										th:param8="(${item2.precio} + ${item.precio})/1.18" th:param9="1.18">
+										<i class="fas fa-angle-right"></i></a>
+									</td>
+									</tr>
+								</tbody>	
+							</table>
+				</div>
+            <div class="card-header bg-danger text-white"><i class="fas fa-users"></i> Boletas de pago</div>
             <div class="card-body">		
                	<div class="table-responsive">
 							<table class="table table-bordered table-hover">
 								<thead class="thead-dark">
 									<tr>
 										<th scope="col">Nombre Cliente</th>
-										<th scope="col">Nombre Pedido</th>
-										<th scope="col">Precio del pedido</th>
-										<th scope="col">Costo de reparto</th>
-										<th scope="col">Total</th>
+										<th scope="col">Razon Social</th>
+										<th scope="col">RUC</th>
+										<th scope="col">Total de la factura</th>
+										<th scope="col">Ver Factura</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr th:each="item: ${listaFactura}">
 									<td th:text="${item.pedidos.cliente.nombre}"></td>
-									<td th:text="${item.pedidos.nombre}"></td>
-									<td th:text="${item.pedidos.precio}"></td>
-									<td th:text="${item.reparto.precio}"></td>
+									<td th:text="${item.fac_razon}"></td>
+									<td th:text="${item.fac_ruc}"></td>
 									<td th:text="${item.fac_total}"></td>
+									<td class="text-center">
+									<a th:id="${item.fac_id}" class="btn btn-success verFactura" title="verFactura" 
+									th:param2="${item.fac_detalle}" th:param3="${item.fac_total}" th:param4="${item.fac_ruc}" th:param5="${item.fac_razon}"><i class="fas fa-angle-down"></i></a>
+									</td>
 									</tr>
 								</tbody>	
 							</table>
-						</div>
-            </div>
-            <br>
-            <div class="container mt-4">
-            	<div class="row">
-					<div class="col-12 text-center">
-						<p>
-							<button  "boleta" class="btn btn-dark " type="button" data-toggle="collapse" 
-								data-target="#collapseExample" aria-expanded="false"
-								aria-controls="collapseExample"><i class="fa-light fa-books-medical"></i>
-								Registrar nueva factura
-							</button>
-						</p>
-					</div>
-            	</div>
 				</div>
-				<div class="collapse" id="collapseExample">
-								<form th:action="@{/factura/form}" th:object="${factura}" method="post" class="needs-validation" novalidate>
-								<div class="alert warning alert-dismissible fade show" role="alert" th:if="${error != null}">
-										<span th:text=${error}></span>
-											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-											</button>
-									</div>
-								<div class="card">
-									<div class="card-header bg-danger text-white">Registrar Factura</div>
-									<div class="card-body">
-										<div class="row">
-											<div class="col-md-6 mb-3">
-
-												<label>Seleccione nombre del pedido :</label> 
-												<select th:field="*{pedidos.id}" class="form-control"aria-label=".form-select-sm example" required="required" > 
-													<option value="" selected>Seleccione el pedido</option>
-													<option th:each="item: ${listaPedidos}" th:value="${item.id}" th:text="${item.nombre}"></option>
-												</select>
-												<div class="invalid-feedback">Ingrese Detalle</div>
-												
-											</div> 
-										</div>
-										<div class="row">
-											<div class="col-md-6 mb-3">
-												<label>Id del reparto:</label> 
-												<select th:field="*{reparto.id}" class="form-control"aria-label=".form-select-sm example" required="required" > 
-													<option value="" selected>Seleccione el pedido</option>
-													<option th:each="item: ${listaReparto}" th:value="${item.id}" th:text="${item.id}"></option>
-												</select>
-												<div class="invalid-feedback">Ingrese Detalle</div>
-												
-											</div> 
-										</div>
-										<div class="row">
-											<div class="col-md-6 mb-3">
-												<label>Total: </label> <input th:field="*{fac_total}" type="number"
-													class="form-control" 
-													required="required" />
-											</div> 
-										</div>
-										<br>
-										<div class="row">
-											<div class="col-12 text-center">
-												<button type="submit" class="btn btn-dark">
-													<i class="fas fa-save"></i> Guardar Factura
-												</button>
-											</div>
-										</div>
-									</div>
-								</div> 
-							</form>
-				</div>         
-            </div>
+            </div> 
+         </div>
        </div>
+       <!-- Modal generar boleta -->
+       <div id="modalFactura" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header bg-danger text-white">
+						<h5 class="modal-title">Generar Factura</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form th:action="@{/factura/form}" th:object="${factura}" method="post" class="needs-validation" novalidate>
+						<input type="hidden" th:field="*{fac_id}" />
+						<input type="hidden" th:field="*{pedidos.id}" name="pedidos" id="id"/>
+						<input type="hidden" th:field="*{reparto.id}" name="reparto" id="txtReparto"/>
+						<div class="modal-body" id="modalMensaje">
+						<fieldset disabled>
+							<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>Nombre del cliente:</label>
+							            <input th:field="*{pedidos.cliente.nombre}" type="text" class="form-control" name="nombre" id="txtNombre" required="required" >
+							    </div>
+							</div>
+							<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>Nombre del pedido:</label>
+							            <input th:field="*{pedidos.nombre}" type="text" class="form-control" name="pedido" id="txtPedido" required="required" >
+							    </div>
+							</div>
+							<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>Precio del pedido:</label>
+							            <input th:field="*{pedidos.precio}" type="number" min="0.00" max="100.00" step="0.01" class="form-control" name="precio" id="Precio" required="required" >
+							    </div>
+							</div>
+							
+							<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>Precio del reparto:</label>
+							            <input th:field="*{reparto.precio}" type="number" min="0.00" max="100.00" step="0.01" class="form-control" name="precioR" id="PrecioR" required="required" >
+							    </div>
+							</div>
+							</fieldset>
+							<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>Nombre de la empresa:</label>
+							            <input th:field="*{fac_razon}" type="text" class="form-control"  placeholder="Ingrese razon social" minlength="1" maxlength="100" required="required" >
+							    </div>
+							</div>
+							
+							<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>RUC de la empresa:</label>
+							            <input th:field="*{fac_ruc}" class="form-control"  placeholder="Ingrese RUC de la empresa" required="required" >
+							    </div>
+							</div>
+							
+							<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>Detalle del pedido:</label>
+							            <textarea type="text" th:field="*{fac_detalle}" name="detalle" id="txtDetalle"
+							            class="form-control" placeholder="Ingrese detalle del pedido"
+							            required="required"></textarea>
+							        <div class="invalid-feedback">Seleccione una opción</div>
+							    </div>
+							</div>
+							
+							<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>Sub Total:</label>
+							            <input th:field="*{fac_subtotal}" type="number" name="subtotal" id="subTotal" step="0.01" class="form-control" required="required" >
+							    </div>
+							</div>
+							<input type="hidden" th:field="*{fac_igv}" th:value="igv" name="igv" id="igv"/>
+							
+							<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>Total:</label>
+							            <input th:field="*{fac_total}"  type="number" name="total" id="Total" class="form-control" required="required" >
+							    </div>
+							</div>
+							
+							
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">
+								<i class="fas fa-ban"></i> Cancelar
+							</button>
+							<button class="btn btn-dark" type="submit">
+								<i class="fas fa-save"></i> Generar Factura
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div> 
+		<!-- Modal generar boleta final-->
+		<!-- Modal ver factura -->
+		<div id="modalFactura1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header bg-danger text-white">
+						<h5 class="modal-title">Ver Factura</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form th:action="@{/factura/form}" th:object="${factura}" method="post" class="needs-validation" novalidate>
+						<input type="hidden" th:field="*{fac_id}" />
+						<div class="modal-body" id="modalMensaje">
+							<fieldset disabled>
+								<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>Razon Social:</label>
+							            <input type="text" class="form-control" name="razon_social" id="txtfac_razon" required="required" >
+							    </div>
+							    
+							    <div class="col-12 mb-3">
+							        <label>RUC:</label>
+							            <input type="text" class="form-control" name="razon_social" id="txtfac_ruc" required="required" >
+							    </div>
+							    
+								</div>
+								<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>Detalle del pedido:</label>
+							            <textarea type="text"  name="detalle" id="txtfac_detalle"
+							            class="form-control" required="required"></textarea>
+							    </div>
+							</div>
+							<div class="form-row">
+							    <div class="col-12 mb-3">
+							        <label>Total de la Factura:</label>
+							            <input type="number" min="0.00" max="100.00" step="0.01"  name="Total" id="txtfac_total"class="form-control" required="required" >
+							    </div>
+							</div>	
+							</fieldset>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-success" data-dismiss="modal">
+								</i> Listo
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+       	<!-- Modal generar ver final-->
     </div>
 		
 		</div>
@@ -145,6 +257,9 @@
 	<script type="text/javascript" th:src="@{/dashboard/js/advertencia.js}"></script>
 	<script type="text/javascript" th:src="@{/dashboard/js/sweetalert.min.js}"></script>
 	<script type="text/javascript" th:src="@{/dashboard/js/cliente.js}"></script>
+	<script type="text/javascript" th:src="@{/dashboard/js/generarFactura.js}"></script>
+	<script type="text/javascript" th:src="@{/dashboard/js/verFactura.js}"></script>
+	
 
 </body>
 

@@ -29,7 +29,7 @@ public class Factura implements Serializable {
 	private String fac_detalle;
 	
 	@Column(name = "fac_ruc")
-	private int fac_ruc;
+	private String fac_ruc;
 	
 	@Column(name = "fac_subtotal")
 	private Double fac_subtotal;
@@ -39,6 +39,9 @@ public class Factura implements Serializable {
 	
 	@Column(name = "fac_total")
 	private Double fac_total;
+	
+	@Column(name = "fac_razon")
+	private String fac_razon;
 	
 	@ManyToOne
 	@JoinColumn(name = "p_id")
@@ -64,11 +67,11 @@ public class Factura implements Serializable {
 		this.fac_detalle = fac_detalle;
 	}
 
-	public int getFac_ruc() {
+	public String getFac_ruc() {
 		return fac_ruc;
 	}
 
-	public void setFac_ruc(int fac_ruc) {
+	public void setFac_ruc(String fac_ruc) {
 		this.fac_ruc = fac_ruc;
 	}
 
@@ -112,5 +115,13 @@ public class Factura implements Serializable {
 		this.reparto = reparto;
 	}
 	
+	public String getFac_razon() {
+		return fac_razon;
+	}
+
+	public void setFac_razon(String fac_razon) {
+		this.fac_razon = fac_razon;
+	}
+
 	
 }
